@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { insertData} from "../services/truck/Insert.services";
-import Garden from "../interface/garden";
+// import Garden from "../interface/garden";
 import { getOneData } from "../genericQueries/getOne.services";
 import { deleteGardenData } from "../services/delete.services";
 import { getData } from "../genericQueries/getBuilder";
@@ -61,7 +61,7 @@ export const getProductView = async (req: Request, res: Response) => {
 // tu controlador
 export const updateGarden = async (req: Request, res: Response) => {
   const tableName = "garden";
-  const newData: Garden = req.body;
+  const newData: Truck = req.body;
   const id = req.params.id; // Asumiendo que el id está en los parámetros de la solicitud
 
   try {
@@ -102,7 +102,7 @@ export const getOneUser = async (req: Request, res: Response) => {
 export const deleteGarden = async (req: Request, res: Response) => {
   const tableName = "garden"; // Reemplaza con el nombre de tu tabla
   // const newData = req.body;
-  const newData: Garden = req.body;
+  const newData: Truck = req.body;
   const id = req.params;
 
   try {

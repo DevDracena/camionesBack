@@ -6,12 +6,7 @@ import morgan from 'morgan';
 import cors from 'cors';
 import { errors as celebrateErrors } from 'celebrate';
 import userRoutes from './routes/user.routes';
-import gardenRoutes from './routes/garden.routes';
-import ownerRoutes from './routes/owner.routes';
-import categoryRoutes from './routes/category.routes';
-import brandRoutes from './routes/brand.routes';
-import supplierRoutes from './routes/supplier.routes';
-import productRoutes from './routes/product.routes';
+
 import loginRoutes from './routes/login.routes';
 import protectedRoutes from './routes/protected.routes';
 import HangarRoutes from './routes/Hangar.routes';
@@ -34,12 +29,6 @@ app.use(loginRoutes);
 
 // Rutas protegidas
 app.use(userRoutes);
-app.use(gardenRoutes);
-app.use(ownerRoutes);
-app.use(categoryRoutes);
-app.use(brandRoutes);
-app.use(supplierRoutes);
-app.use(productRoutes);
 app.use(HangarRoutes);
 app.use(StateRoutes);
 app.use(TruckRoutes);
