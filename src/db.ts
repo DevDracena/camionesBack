@@ -7,7 +7,7 @@ export const AppDataSource: DataSourceOptions = {
     port: 3310,
     username: "root",
     password: "12345",
-    database: "typeorm",
+    database: "camiones",
     entities: [],
     logging:true,
     synchronize:true,
