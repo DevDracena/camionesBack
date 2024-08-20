@@ -1,18 +1,16 @@
 import { Request, Response } from "express";
-import { insertData} from "../services/product/Insert.services";
+import { insertData} from "../services/state/Insert.services";
 import Garden from "../interface/garden";
 import { getOneData } from "../genericQueries/getOne.services";
 import { deleteGardenData } from "../services/delete.services";
 import { getData } from "../genericQueries/getBuilder";
 import { updateData } from "../services/update.services";
-import Category from "../interface/category";
-import Brand from "../interface/brand";
-import Product from "../interface/product";
+import State from "../interface/state";
 
 
-export const createProduct = async (req: Request, res: Response) => {
-  const tableName = "producto"; // Reemplaza con el nombre de tu tabla
-  const data: Product = req.body;
+export const createState = async (req: Request, res: Response) => {
+  const tableName = "state"; // Reemplaza con el nombre de tu tabla
+  const data: State = req.body;
   try {
     // Utiliza el servicio para insertar los datos
     const resp = await insertData(tableName, data);
@@ -20,7 +18,7 @@ export const createProduct = async (req: Request, res: Response) => {
 
     res.json({ message: "Data inserted successfully", resp});
   } catch (error) {
-    console.error("Error creating product:", error);
+    console.error("Error creating user:", error);
 
     if (error instanceof Error) {
       return res.status(500).json({ message: error.message });
@@ -28,14 +26,14 @@ export const createProduct = async (req: Request, res: Response) => {
   }
 };
 
-export const getProduct = async (req: Request, res: Response) => {
-  const tableName = "producto"; // Reemplaza con el nombre de tu tabla
+export const getState = async (req: Request, res: Response) => {
+  const tableName = "state"; // Reemplaza con el nombre de tu tabla
 
   try {
-    const productData = await getData(tableName);
-    res.json(productData);
+    const userData = await getData(tableName);
+    res.json(userData);
   } catch (error) {
-    console.error("Error getting product data:", error);
+    console.error("Error getting state data:", error);
 
     if (error instanceof Error) {
       return res.status(500).json({ message: error.message });
@@ -79,17 +77,17 @@ export const updateGarden = async (req: Request, res: Response) => {
 };
 
 
-export const getOneGarden = async (req: Request, res: Response) => {
+export const getOneUser = async (req: Request, res: Response) => {
   const { id } = req.params;
-  const tableName = "garden"; // Reemplaza con el nombre de tu tabla
+  const tableName = "user"; // Reemplaza con el nombre de tu tabla
 
   try {
-    const gardenData = await getOneData(tableName, parseInt(id, 10));
+    const Data = await getOneData(tableName, parseInt(id, 10));
 
-    if (gardenData) {
-      res.json(gardenData);
+    if (Data) {
+      res.json(Data);
     } else {
-      res.status(404).json({ message: "Garden not found" });
+      res.status(404).json({ message: "user not found" });
     }
   } catch (error) {
     console.error("Error getting garden data:", error);

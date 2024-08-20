@@ -1,24 +1,25 @@
 import { Request, Response } from "express";
-import { insertData} from "../services/brand/Insert.services";
+import { insertData} from "../services/truck/Insert.services";
 import Garden from "../interface/garden";
 import { getOneData } from "../genericQueries/getOne.services";
 import { deleteGardenData } from "../services/delete.services";
 import { getData } from "../genericQueries/getBuilder";
 import { updateData } from "../services/update.services";
-import Category from "../interface/category";
-import Brand from "../interface/brand";
+import State from "../interface/state";
+import Truck from "../interface/truck";
 
 
-export const createBrand = async (req: Request, res: Response) => {
-  const tableName = "marca"; // Reemplaza con el nombre de tu tabla
-  const data: Brand = req.body;
+export const createTruck = async (req: Request, res: Response) => {
+  const tableName = "truck"; // Reemplaza con el nombre de tu tabla
+  const data: Truck = req.body;
   try {
     // Utiliza el servicio para insertar los datos
     const resp = await insertData(tableName, data);
 
+
     res.json({ message: "Data inserted successfully", resp});
   } catch (error) {
-    console.error("Error creating marca:", error);
+    console.error("Error creating user:", error);
 
     if (error instanceof Error) {
       return res.status(500).json({ message: error.message });
@@ -26,14 +27,14 @@ export const createBrand = async (req: Request, res: Response) => {
   }
 };
 
-export const getBrand = async (req: Request, res: Response) => {
-  const tableName = "marca"; // Reemplaza con el nombre de tu tabla
+export const getTruck = async (req: Request, res: Response) => {
+  const tableName = "truck"; // Reemplaza con el nombre de tu tabla
 
   try {
-    const brandData = await getData(tableName);
-    res.json(brandData);
+    const userData = await getData(tableName);
+    res.json(userData);
   } catch (error) {
-    console.error("Error getting brand data:", error);
+    console.error("Error getting truck data:", error);
 
     if (error instanceof Error) {
       return res.status(500).json({ message: error.message });
@@ -41,14 +42,14 @@ export const getBrand = async (req: Request, res: Response) => {
   }
 };
 
-export const getActivity = async (req: Request, res: Response) => {
-  const tableName = "activityView"; // Reemplaza con el nombre de tu tabla
+export const getProductView = async (req: Request, res: Response) => {
+  const tableName = "productView"; // Reemplaza con el nombre de tu tabla
 
   try {
     const gardenData = await getData(tableName);
     res.json(gardenData);
   } catch (error) {    
-    console.error("Error getting garden data:", error);
+    console.error("Error getting product data:", error);
 
     if (error instanceof Error) {
       return res.status(500).json({ message: error.message });
@@ -77,17 +78,17 @@ export const updateGarden = async (req: Request, res: Response) => {
 };
 
 
-export const getOneGarden = async (req: Request, res: Response) => {
+export const getOneUser = async (req: Request, res: Response) => {
   const { id } = req.params;
-  const tableName = "garden"; // Reemplaza con el nombre de tu tabla
+  const tableName = "user"; // Reemplaza con el nombre de tu tabla
 
   try {
-    const gardenData = await getOneData(tableName, parseInt(id, 10));
+    const Data = await getOneData(tableName, parseInt(id, 10));
 
-    if (gardenData) {
-      res.json(gardenData);
+    if (Data) {
+      res.json(Data);
     } else {
-      res.status(404).json({ message: "Garden not found" });
+      res.status(404).json({ message: "user not found" });
     }
   } catch (error) {
     console.error("Error getting garden data:", error);

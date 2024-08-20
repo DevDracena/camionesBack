@@ -1,23 +1,24 @@
 import { Request, Response } from "express";
-import { insertCategoryData} from "../services/category/Insert.category";
+import { insertData} from "../services/hangar/Insert.services";
 import Garden from "../interface/garden";
 import { getOneData } from "../genericQueries/getOne.services";
 import { deleteGardenData } from "../services/delete.services";
 import { getData } from "../genericQueries/getBuilder";
 import { updateData } from "../services/update.services";
-import Category from "../interface/category";
+import Hangar from "../interface/hangar";
 
 
-export const createCategory = async (req: Request, res: Response) => {
-  const tableName = "categoria"; // Reemplaza con el nombre de tu tabla
-  const data: Category = req.body;
+export const createHangar = async (req: Request, res: Response) => {
+  const tableName = "hangar"; // Reemplaza con el nombre de tu tabla
+  const data: Hangar = req.body;
   try {
     // Utiliza el servicio para insertar los datos
-    const resp = await insertCategoryData(tableName, data);
+    const resp = await insertData(tableName, data);
+
 
     res.json({ message: "Data inserted successfully", resp});
   } catch (error) {
-    console.error("Error creating category:", error);
+    console.error("Error creating user:", error);
 
     if (error instanceof Error) {
       return res.status(500).json({ message: error.message });
@@ -25,14 +26,14 @@ export const createCategory = async (req: Request, res: Response) => {
   }
 };
 
-export const getCategory = async (req: Request, res: Response) => {
-  const tableName = "categoria"; // Reemplaza con el nombre de tu tabla
+export const getHangar = async (req: Request, res: Response) => {
+  const tableName = "hangar"; // Reemplaza con el nombre de tu tabla
 
   try {
-    const gardenData = await getData(tableName);
-    res.json(gardenData);
+    const userData = await getData(tableName);
+    res.json(userData);
   } catch (error) {
-    console.error("Error getting category data:", error);
+    console.error("Error getting hangar data:", error);
 
     if (error instanceof Error) {
       return res.status(500).json({ message: error.message });
@@ -40,14 +41,14 @@ export const getCategory = async (req: Request, res: Response) => {
   }
 };
 
-export const getActivity = async (req: Request, res: Response) => {
-  const tableName = "activityView"; // Reemplaza con el nombre de tu tabla
+export const getProductView = async (req: Request, res: Response) => {
+  const tableName = "productView"; // Reemplaza con el nombre de tu tabla
 
   try {
     const gardenData = await getData(tableName);
     res.json(gardenData);
   } catch (error) {    
-    console.error("Error getting garden data:", error);
+    console.error("Error getting product data:", error);
 
     if (error instanceof Error) {
       return res.status(500).json({ message: error.message });
@@ -76,17 +77,17 @@ export const updateGarden = async (req: Request, res: Response) => {
 };
 
 
-export const getOneGarden = async (req: Request, res: Response) => {
+export const getOneUser = async (req: Request, res: Response) => {
   const { id } = req.params;
-  const tableName = "garden"; // Reemplaza con el nombre de tu tabla
+  const tableName = "user"; // Reemplaza con el nombre de tu tabla
 
   try {
-    const gardenData = await getOneData(tableName, parseInt(id, 10));
+    const Data = await getOneData(tableName, parseInt(id, 10));
 
-    if (gardenData) {
-      res.json(gardenData);
+    if (Data) {
+      res.json(Data);
     } else {
-      res.status(404).json({ message: "Garden not found" });
+      res.status(404).json({ message: "user not found" });
     }
   } catch (error) {
     console.error("Error getting garden data:", error);

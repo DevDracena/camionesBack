@@ -14,6 +14,10 @@ import supplierRoutes from './routes/supplier.routes';
 import productRoutes from './routes/product.routes';
 import loginRoutes from './routes/login.routes';
 import protectedRoutes from './routes/protected.routes';
+import HangarRoutes from './routes/Hangar.routes';
+import StateRoutes from './routes/state.routes';
+import TruckRoutes from './routes/truck.routes';
+
 import { verifyToken } from './middleware/auth';
 
 const app = express();
@@ -26,7 +30,7 @@ app.use(express.json());
 app.use(loginRoutes);
 
 // Aplicar el middleware de autenticación a todas las demás rutas
-app.use(verifyToken);
+// app.use(verifyToken);
 
 // Rutas protegidas
 app.use(userRoutes);
@@ -36,6 +40,10 @@ app.use(categoryRoutes);
 app.use(brandRoutes);
 app.use(supplierRoutes);
 app.use(productRoutes);
+app.use(HangarRoutes);
+app.use(StateRoutes);
+app.use(TruckRoutes);
+
 app.use(protectedRoutes);
 
 app.use(celebrateErrors());

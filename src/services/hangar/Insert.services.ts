@@ -1,13 +1,14 @@
-// garden.services.ts
 import { getConnection } from "typeorm";
 import { generateInsertQuery } from "../../genericQueries/insertBuilder";
-
+// import bcrypt from 'bcrypt';
 
 export async function insertData(tableName: string, data: Record<string, any>): Promise<any> {
   
   // Crea una copia de los datos con la entrada actualizada
-  const datosActualizados = { ...data};
+  const datosActualizados = { ...data };
 
+
+  console.log(data);
   const insertQuery = generateInsertQuery(tableName, datosActualizados);
 
   try {    
