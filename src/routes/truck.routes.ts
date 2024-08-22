@@ -5,15 +5,15 @@ import { createHangar, getHangar } from "../controllers/hangar.controllers";
 import { hangarValidate } from "../validators/hangar.validation";
 import { createState, getState } from "../controllers/state.controllers";
 import { stateValidate } from "../validators/state.validation";
-import { createTruck, getTruck } from "../controllers/truck.controllers";
+import { createTruck, getListTruck, getTruck, updateTruck } from "../controllers/truck.controllers";
 import { truckValidate } from "../validators/truck.validation";
 
 const router = Router()
 router.post("/truck", truckValidate, createTruck);
 router.get("/truck", getTruck);
-// router.get("/garden/viewActivity", getActivity);
+router.get("/truck/listTruckView", getListTruck);
 // router.get("/user/:id", getOneUser);
-// router.put("/garden/:id", updateGarden);
+router.put("/truck/:id", truckValidate, updateTruck);
 // router.delete("/garden/:id", deleteGarden);
 
 

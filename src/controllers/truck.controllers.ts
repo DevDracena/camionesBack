@@ -4,7 +4,7 @@ import { insertData} from "../services/truck/Insert.services";
 import { getOneData } from "../genericQueries/getOne.services";
 import { deleteGardenData } from "../services/delete.services";
 import { getData } from "../genericQueries/getBuilder";
-import { updateData } from "../services/update.services";
+import { updateData } from "../services/truck/update.services";
 import State from "../interface/state";
 import Truck from "../interface/truck";
 
@@ -42,14 +42,14 @@ export const getTruck = async (req: Request, res: Response) => {
   }
 };
 
-export const getProductView = async (req: Request, res: Response) => {
-  const tableName = "productView"; // Reemplaza con el nombre de tu tabla
+export const getListTruck = async (req: Request, res: Response) => {
+  const tableName = "listTruckView"; // Reemplaza con el nombre de tu tabla
 
   try {
     const gardenData = await getData(tableName);
     res.json(gardenData);
   } catch (error) {    
-    console.error("Error getting product data:", error);
+    console.error("Error getting truck list data:", error);
 
     if (error instanceof Error) {
       return res.status(500).json({ message: error.message });
@@ -59,8 +59,8 @@ export const getProductView = async (req: Request, res: Response) => {
 
 
 // tu controlador
-export const updateGarden = async (req: Request, res: Response) => {
-  const tableName = "garden";
+export const updateTruck = async (req: Request, res: Response) => {
+  const tableName = "truck";
   const newData: Truck = req.body;
   const id = req.params.id; // Asumiendo que el id está en los parámetros de la solicitud
 
