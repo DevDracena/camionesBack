@@ -1,26 +1,47 @@
+// truck.controllers.ts
+
 import { Request, Response } from "express";
-import { insertData} from "../services/truck/Insert.services";
-// import Garden from "../interface/garden";
+import { insertData } from "../services/truck/Insert.services";
 import { getOneData } from "../genericQueries/getOne.services";
 import { deleteGardenData } from "../services/delete.services";
 import { getData } from "../genericQueries/getBuilder";
 import { updateData } from "../services/truck/update.services";
-import State from "../interface/state";
 import Truck from "../interface/truck";
+import { io } from "../app"; 
 
+// Función reutilizable para obtener datos de la tabla "listTruckView"
+export const fetchTruckData = async () => {
+  const tableName = "listTruckView"; 
+  try {
+    const data = await getData(tableName);
+    return data;
+  } catch (error) {    
+    console.error("Error getting truck list data:", error);
+    throw error;
+  }
+};
 
+// Controlador Express que utiliza `fetchTruckData`
+export const getListTruck = async (req: Request, res: Response) => {
+  try {
+    const data = await fetchTruckData();
+    res.json(data);
+  } catch (error) {
+    if (error instanceof Error) {
+      return res.status(500).json({ message: error.message });
+    }
+  }
+};
+
+// Otros controladores...
 export const createTruck = async (req: Request, res: Response) => {
-  const tableName = "truck"; // Reemplaza con el nombre de tu tabla
+  const tableName = "truck";
   const data: Truck = req.body;
   try {
-    // Utiliza el servicio para insertar los datos
     const resp = await insertData(tableName, data);
-
-
-    res.json({ message: "Data inserted successfully", resp});
+    res.json({ message: "Data inserted successfully", resp });
   } catch (error) {
-    console.error("Error creating user:", error);
-
+    console.error("Error creating truck:", error);
     if (error instanceof Error) {
       return res.status(500).json({ message: error.message });
     }
@@ -28,71 +49,65 @@ export const createTruck = async (req: Request, res: Response) => {
 };
 
 export const getTruck = async (req: Request, res: Response) => {
-  const tableName = "truck"; // Reemplaza con el nombre de tu tabla
-
+  const tableName = "truck";
   try {
-    const userData = await getData(tableName);
-    res.json(userData);
+    const truckData = await getData(tableName);
+    res.json(truckData);
   } catch (error) {
     console.error("Error getting truck data:", error);
-
     if (error instanceof Error) {
       return res.status(500).json({ message: error.message });
     }
   }
 };
 
-export const getListTruck = async (req: Request, res: Response) => {
-  const tableName = "listTruckView"; // Reemplaza con el nombre de tu tabla
-
-  try {
-    const gardenData = await getData(tableName);
-    res.json(gardenData);
-  } catch (error) {    
-    console.error("Error getting truck list data:", error);
-
-    if (error instanceof Error) {
-      return res.status(500).json({ message: error.message });
-    }
-  }
-};
-
-
-// tu controlador
-export const updateTruck = async (req: Request, res: Response) => {
+export const updateTruck = async (truckId: any, data: any) => {
   const tableName = "truck";
-  const newData: Truck = req.body;
-  const id = req.params.id; // Asumiendo que el id está en los parámetros de la solicitud
-
+  const newData: Truck = data;
+  
+  // console.log("camion desde el back",truckId);
+  // console.log("estado desde el back",newState);
+  const id = truckId;
   try {
     await updateData(tableName, id, newData);
+    
+    // Emitir un evento después de la actualización
+    const updatedTruck = await fetchTruckDataById(id);
+    io.emit("truckDataUpdated", { id, updatedTruck });
 
-    res.json({ message: "Data updated successfully" });
+    return { message: "Data updated successfully" };
   } catch (error) {
     console.error("Error updating data:", error);
-
-    if (error instanceof Error) {
-      return res.status(500).json({ message: error.message });
-    }
+    throw error;
   }
 };
 
+
+
+// Función reutilizable para obtener datos de un camión por ID
+export const fetchTruckDataById = async (id: string) => {
+  const tableName = "truck"; 
+  try {
+    const data = await getOneData(tableName, parseInt(id, 10));
+    return data;
+  } catch (error) {
+    console.error("Error getting truck data by ID:", error);
+    throw error;
+  }
+};
 
 export const getOneUser = async (req: Request, res: Response) => {
   const { id } = req.params;
-  const tableName = "user"; // Reemplaza con el nombre de tu tabla
-
+  const tableName = "user";
   try {
-    const Data = await getOneData(tableName, parseInt(id, 10));
-
-    if (Data) {
-      res.json(Data);
+    const data = await getOneData(tableName, parseInt(id, 10));
+    if (data) {
+      res.json(data);
     } else {
-      res.status(404).json({ message: "user not found" });
+      res.status(404).json({ message: "User not found" });
     }
   } catch (error) {
-    console.error("Error getting garden data:", error);
-
+    console.error("Error getting user data:", error);
     if (error instanceof Error) {
       res.status(500).json({ message: error.message });
     }
@@ -100,18 +115,14 @@ export const getOneUser = async (req: Request, res: Response) => {
 };
 
 export const deleteGarden = async (req: Request, res: Response) => {
-  const tableName = "garden"; // Reemplaza con el nombre de tu tabla
-  // const newData = req.body;
+  const tableName = "garden";
   const newData: Truck = req.body;
   const id = req.params;
-
   try {
     await deleteGardenData(tableName, newData, id);
-
-    res.json({ message: "Data delete successfully", newData });
+    res.json({ message: "Data deleted successfully", newData });
   } catch (error) {
     console.error("Error deleting garden data:", error);
-
     if (error instanceof Error) {
       return res.status(500).json({ message: error.message });
     }

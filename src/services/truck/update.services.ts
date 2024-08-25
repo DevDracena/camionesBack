@@ -1,4 +1,3 @@
-// Tu servicio
 import { getManager } from 'typeorm';
 import { generateUpdateQuery } from '../../genericQueries/updateBuilder';
 
@@ -9,22 +8,21 @@ export const updateData = async (tableName: string, id: any, newData: any): Prom
     // Obtener la fecha actual
     const update_at = new Date();
 
-    // Convertir entrada y salida a formato de timestamp
-    // const formattedEntrada = newData.entrada ? new Date(newData.entrada * 1000) : null;
-    // const formattedSalida = newData.salida ? new Date(newData.salida * 1000) : null;
+    // console.log("datos", newData);
 
-    // Agregar la fecha actual y las fechas formateadas a newData antes de la actualización
-    const data = {
-      ...newData,
-      update_at,
-      // entrada: formattedEntrada,
-      // salida: formattedSalida
-    };
+    const { id_state, id_hangar, ...restData } = newData;
 
-    const updateQuery = await generateUpdateQuery(tableName, id, data);
+    // Filtrar claves con valores `undefined`
+    const filteredData = Object.fromEntries(
+      Object.entries({ ...restData, id_state, id_hangar, update_at }).filter(([_, value]) => value !== undefined)
+    );
+
+    // console.log("filteredData", filteredData);
+
+    const updateQuery = await generateUpdateQuery(tableName, id, filteredData);
 
     // Crear un array de valores con id al final
-    const values = [...Object.values(data), id];
+    const values = [...Object.values(filteredData), id];
 
     // Realiza la actualización en la base de datos con los valores formateados
     await entityManager.query(updateQuery, values);

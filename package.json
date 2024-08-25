@@ -23,6 +23,7 @@
     "morgan": "^1.10.0",
     "mysql": "^2.18.1",
     "reflect-metadata": "^0.1.14",
+    "socket.io": "^4.7.5",
     "typedi": "^0.10.0",
     "typeorm": "^0.3.17",
     "typescript": "^5.3.2"

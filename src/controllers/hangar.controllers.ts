@@ -30,8 +30,9 @@ export const getHangar = async (req: Request, res: Response) => {
   const tableName = "hangar"; // Reemplaza con el nombre de tu tabla
 
   try {
-    const userData = await getData(tableName);
-    res.json(userData);
+    const Data = await getData(tableName);
+    // console.log("dataaaa",Data);
+    res.json(Data);
   } catch (error) {
     console.error("Error getting hangar data:", error);
 
