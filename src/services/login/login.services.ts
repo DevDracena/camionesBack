@@ -12,7 +12,7 @@ interface VerifyUserResult {
   isValid: boolean;
   id?: number;
   username?: string;
-  level?: number;
+  id_level?: number;
 }
 
 export const verifyUser = async (tableName: string, data: UserData): Promise<VerifyUserResult> => {
@@ -33,7 +33,7 @@ export const verifyUser = async (tableName: string, data: UserData): Promise<Ver
 
       if (match) {
         // Devuelve el nivel del usuario, id y nombre de usuario si las credenciales son correctas
-        return { isValid: true, id: user.id, username: user.username, level: user.level };
+        return { isValid: true, id: user.id, username: user.username, id_level: user.id_level };
       } else {
         return { isValid: false }; // La contraseña no coincide
       }

@@ -19,7 +19,7 @@ export async function insertData(tableName: string, data: Record<string, any>): 
     const result = await connection.query(`${insertQuery} RETURNING *`);
     const insertedData = result[0];
 
-    console.log("Data inserted successfully:", insertedData);
+    // console.log("Data inserted successfully:", insertedData);
 
     return insertedData;
 

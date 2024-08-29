@@ -9,14 +9,13 @@ import { updateData } from "../services/update.services";
 import User from "../interface/user";
 
 
-export const createUser = async (req: Request, res: Response) => {
+export const createCamion = async (req: Request, res: Response) => {
   const tableName = "user"; // Reemplaza con el nombre de tu tabla
   const data: User = req.body;
   try {
-    // console.log("data desde controlador",data)
     // Utiliza el servicio para insertar los datos
     const resp = await insertData(tableName, data);
-    // console.log("respuesta insert",resp)
+
 
     res.json({ message: "Data inserted successfully", resp});
   } catch (error) {
@@ -28,14 +27,14 @@ export const createUser = async (req: Request, res: Response) => {
   }
 };
 
-export const getUsers = async (req: Request, res: Response) => {
-  const tableName = "user"; // Reemplaza con el nombre de tu tabla
+export const getCamion = async (req: Request, res: Response) => {
+  const tableName = "chapas"; // Reemplaza con el nombre de tu tabla
 
   try {
-    const userData = await getData(tableName);
-    res.json(userData);
+    const Data = await getData(tableName);
+    res.json(Data);
   } catch (error) {
-    console.error("Error getting product data:", error);
+    console.error("Error getting camion data:", error);
 
     if (error instanceof Error) {
       return res.status(500).json({ message: error.message });

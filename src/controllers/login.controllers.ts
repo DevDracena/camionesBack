@@ -14,11 +14,11 @@ export const loginController = async (req: Request, res: Response) => {
   try {
     const result = await verifyUser('user', { username, password });
 
-    console.log('Result from verifyUser:', result); // Agrega este log
+    // console.log('Result from verifyUser:', result); // Agrega este log
 
     if (result.isValid) {
       // Verifica que result tenga id y username
-      const { id, username, level } = result;
+      const { id, username, id_level } = result;
       if (id && username) {
         // Generar el token JWT
         const token = generateToken({ id, username });
@@ -26,7 +26,7 @@ export const loginController = async (req: Request, res: Response) => {
         return res.status(200).json({
           message: 'Login successful',
           token, // Incluir el token en la respuesta
-          level
+          id_level
         });
       }
     }

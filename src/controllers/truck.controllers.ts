@@ -1,13 +1,15 @@
 // truck.controllers.ts
 
 import { Request, Response } from "express";
-import { insertData } from "../services/truck/Insert.services";
+// import { insertData } from "../services/truck/Insert.services";
 import { getOneData } from "../genericQueries/getOne.services";
 import { deleteGardenData } from "../services/delete.services";
 import { getData } from "../genericQueries/getBuilder";
 import { updateData } from "../services/truck/update.services";
 import Truck from "../interface/truck";
 import { io } from "../app"; 
+import { deleteTruckData } from "../services/truck/delete.services";
+import { createTruckInDB } from "../services/truck/insertTruck.services";
 
 // Función reutilizable para obtener datos de la tabla "listTruckView"
 export const fetchTruckData = async () => {
@@ -34,11 +36,11 @@ export const getListTruck = async (req: Request, res: Response) => {
 };
 
 // Otros controladores...
+
 export const createTruck = async (req: Request, res: Response) => {
-  const tableName = "truck";
   const data: Truck = req.body;
   try {
-    const resp = await insertData(tableName, data);
+    const resp = await createTruckInDB(data);
     res.json({ message: "Data inserted successfully", resp });
   } catch (error) {
     console.error("Error creating truck:", error);
@@ -82,11 +84,34 @@ export const updateTruck = async (truckId: any, data: any) => {
   }
 };
 
+export const deleteTruck = async (truckId: any, data: any) => {
+  const tableName = "truck";
+  const newData: Truck = data;
+  
+  // console.log("camion desde el back",truckId);
+  // console.log("estado desde el back",newState);
+  const id = truckId;
+  try {
+    await deleteTruckData(tableName, id, newData);
+    
+    // // Emitir un evento después de la actualización
+    // const updatedTruck = await fetchTruckDataById(id);
+    // io.emit("truckDataUpdated", { id });
+
+    return { message: "Data updated successfully" };
+  } catch (error) {
+    console.error("Error updating data:", error);
+    throw error;
+  }
+};
+
 
 
 // Función reutilizable para obtener datos de un camión por ID
 export const fetchTruckDataById = async (id: string) => {
   const tableName = "truck"; 
+  // console.log("id desde find id xd",id);
+
   try {
     const data = await getOneData(tableName, parseInt(id, 10));
     return data;
